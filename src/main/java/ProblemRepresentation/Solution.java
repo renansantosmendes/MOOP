@@ -5,6 +5,7 @@
  */
 package ProblemRepresentation;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,7 @@ import java.util.Random;
  *
  * @author renansantos
  */
-public class Solution {
+public class Solution implements Cloneable{
 
     private List<Double> chromossomes;
     private List<Double> objectiveFunctions;
@@ -21,11 +22,23 @@ public class Solution {
     private double fitness;
 
     public Solution(List<Double> chromossome, List<Double> objectiveFunction, double fitness) {
+        this.chromossomes = new ArrayList<>();
+        this.objectiveFunctions = new ArrayList<>();
+        this.fitness = 0;
         this.chromossomes.addAll(chromossome);
         this.objectiveFunctions.addAll(objectiveFunction);
         this.fitness = fitness;
     }
 
+    public Solution(Solution solution) {
+        this.chromossomes = new ArrayList<>();
+        this.objectiveFunctions = new ArrayList<>();
+        this.fitness = 0;
+        this.chromossomes.addAll(solution.getChromossomes());
+        this.objectiveFunctions.addAll(solution.getObjectiveFunctions());
+        this.fitness = solution.getFitness();
+    }
+    
     public Solution() {
         this.chromossomes = new ArrayList<>();
         this.objectiveFunctions = new ArrayList<>();
@@ -95,7 +108,18 @@ public class Solution {
     
     @Override
     public String toString(){
-        return this.objectiveFunctions + "\t"+ this.fitness + "\t" + this.chromossomes;
+        DecimalFormat df = new DecimalFormat("0.000000");
+        return df.format(this.objectiveFunctions.get(0)).replace(",", ".") 
+                + "\t"+ df.format(this.fitness).replace(",", ".")
+                + "\t" + this.chromossomes;
+    }
+    
+    @Override
+    public Solution clone(){
+//        List<Double> newChromossomes = new ArrayList<>();
+//        List<Double> newObjectiveFunctions = new ArrayList<>();
+              
+        return new Solution(this.chromossomes, this.objectiveFunctions, this.fitness);
     }
 
 }

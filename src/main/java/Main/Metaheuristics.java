@@ -11,6 +11,7 @@ import InstanceReader.DataOutput;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -104,7 +105,7 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
         calculateFitness();
         this.bestIndividual.setSolution(population.get(0));
     }
-    
+
     public void printPopulation() {
         System.out.println();
         this.population.forEach(System.out::println);
@@ -112,10 +113,62 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 
     @Override
     public void selection() {
+        Random rnd = new Random();
+        double cursor;
+        double currentSum;
+        this.parents.clear();
+        for (int i = 0; i < this.populationSize; i++) {
+            currentSum = 0;
+            cursor = rnd.nextDouble() / 2;
+            findCursorPosition(currentSum, cursor, rnd);
+        }
+    }
+
+    private void findCursorPosition(double currentSum, double cursor, Random rnd) {
+        int position = -1;
+        for (int j = 0; j < population.size(); j++) {
+            currentSum += population.get(j).getFitness();
+            if (cursor <= currentSum) {
+                position = j;
+                this.parents.add(position);
+                break;
+            }
+        }
+        if (position == -1) {
+            position = rnd.nextInt(population.size());
+            this.parents.add(position);
+        }
     }
 
     @Override
     public void crossOver() {
+        Random rnd = new Random();
+        List<Solution> offspring = new ArrayList<>();
+        for (int i = 0; i < this.population.size(); i = i + 2) {
+            double delta = rnd.nextDouble();
+            Solution parent1 = new Solution(this.population.get(i).clone());
+            Solution parent2 = new Solution(this.population.get(i + 1).clone());
+            List<Double> newChromossomes1 = new ArrayList<>();
+            List<Double> newChromossomes2 = new ArrayList<>();
+            for (int j = 0; j < this.numberOfChromossomes; j++) {
+                newChromossomes1.add(delta * parent1.getChromossomes().get(j) + (1 - delta) * parent2.getChromossomes().get(j));
+                newChromossomes2.add(delta * parent2.getChromossomes().get(j) + (1 - delta) * parent1.getChromossomes().get(j));
+            }
+            Solution child1 = new Solution();
+            Solution child2 = new Solution();
+            
+            child1.setChromossomes(newChromossomes1);
+            child2.setChromossomes(newChromossomes2);
+            
+            child1.evaluateSolution();
+            child2.evaluateSolution();
+            
+            offspring.add(child1);
+            offspring.add(child2);
+        }
+
+        population.clear();
+        population.addAll(offspring);
     }
 
     @Override
@@ -142,16 +195,16 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 
     @Override
     public void calculateFitness() {
-//        double sum = population.stream().mapToDouble(Solution::getObjectiveFunctions).sum();
-//        population.forEach(u -> u.setFitness(u.getEvaluationFunction() / sum));
-//
-//        double max = population.stream().mapToDouble(EvolutionarySolution::getFitness).max().getAsDouble();
-//        double min = population.stream().mapToDouble(EvolutionarySolution::getFitness).min().getAsDouble();
-//        population.forEach(u -> u.setFitness((max - u.getFitness()) / (max - min)));
-//
-//        double fitnessSum = population.stream().mapToDouble(EvolutionarySolution::getFitness).sum();
-//        population.forEach(u -> u.setFitness(u.getFitness() / fitnessSum));
-//        population.sort(Comparator.comparing(EvolutionarySolution::getFitness).reversed());
+        double sum = population.stream().mapToDouble(s -> s.getObjectiveFunctions().get(0)).sum();
+        population.forEach(s -> s.setFitness(s.getObjectiveFunctions().get(0) / sum));
+
+        double max = population.stream().mapToDouble(Solution::getFitness).max().getAsDouble();
+        double min = population.stream().mapToDouble(Solution::getFitness).min().getAsDouble();
+        population.forEach(u -> u.setFitness((max - u.getFitness()) / (max - min)));
+
+        double fitnessSum = population.stream().mapToDouble(Solution::getFitness).sum();
+        population.forEach(u -> u.setFitness(u.getFitness() / fitnessSum));
+        population.sort(Comparator.comparing(Solution::getFitness).reversed());
     }
 
     @Override
