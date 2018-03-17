@@ -29,6 +29,8 @@ public interface EvolutionaryAlgorithm {
     
     public void printInformations();
     
+    public void printPopulation();
+    
     public void calculateFitness();
     
     public void incrementsCurrentIteration();
@@ -38,6 +40,7 @@ public interface EvolutionaryAlgorithm {
     default void geneticAlgorithm() {
         initializeFilesToSaveData();
         initializePopulation();
+        printPopulation();
         while (stopCriterionIsNotSatisfied()) {
             printInformations();
             calculateFitness();

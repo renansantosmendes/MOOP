@@ -13,13 +13,15 @@ public class Main {
 
     public static void main(String[] args) {
         Metaheuristics metaheuristic = new Metaheuristics()
-                .setCrossOverProbability(0.7)
-                .setMutationProbabilty(0.02)
+                .setCrossOverProbability(0.6)
+                .setMutationProbabilty(0.002)
                 .setNumberOfExecutions(5)
-                .setNumberOfGenerations(500)
+                .setNumberOfGenerations(100)
                 .setPopulationSize(100);
-        
+
         metaheuristic.geneticAlgorithm();
+//        metaheuristic.printPopulation();
+        //metaheuristic.initializePopulation();
         metaheuristic.printPopulation();
     }
 }

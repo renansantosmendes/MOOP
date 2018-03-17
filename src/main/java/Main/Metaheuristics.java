@@ -108,6 +108,7 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
         this.bestIndividual.setSolution(population.get(0));
     }
 
+    @Override
     public void printPopulation() {
         System.out.println();
         this.population.forEach(System.out::println);
@@ -181,11 +182,12 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
         for (int i = 0; i < this.populationSize; i++) {
             double probability = rnd.nextDouble();
             if (probability < this.mutationProbabilty) {
-                delta = 0.1*(1 - -1)*rnd.nextGaussian();
+//                delta = 0.001*(8)*rnd.nextGaussian();
                 List<Double> chromossomes = this.population.get(i).getChromossomes();
                 List<Double> newChromossomes = new ArrayList<>();
                 for (Double chromossome : chromossomes){
-                    newChromossomes.add(delta);
+                    delta = 0.01*(this.population.get(i).getMAX_VALUE() - this.population.get(i).getMIN_VALUE())*rnd.nextGaussian();
+                    newChromossomes.add(chromossome + delta);
                 }
                 this.population.get(i).setChromossomes(newChromossomes);
                 this.population.get(i).evaluateSolution();
@@ -195,9 +197,9 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 
     @Override
     public void insertBestIndividual() {
-        if (bestIndividual.getObjectiveFunctions().get(0) < this.population.get(0).getObjectiveFunctions().get(0)) {
+       // if (bestIndividual.getObjectiveFunctions().get(0) < this.population.get(0).getObjectiveFunctions().get(0)) {
             this.population.get(this.population.size() - 1).setSolution(bestIndividual);
-        }
+        //}
     }
 
     @Override
