@@ -75,6 +75,8 @@ public class Solution implements Cloneable{
     }
 
     public void setSolution(Solution solution) {
+        this.chromossomes.clear();
+        this.objectiveFunctions.clear();
         this.chromossomes.addAll(solution.getChromossomes());
         this.objectiveFunctions.addAll(solution.getObjectiveFunctions());
         this.fitness = solution.getFitness();
@@ -108,7 +110,7 @@ public class Solution implements Cloneable{
     
     @Override
     public String toString(){
-        DecimalFormat df = new DecimalFormat("0.000000");
+        DecimalFormat df = new DecimalFormat("0.00000000");
         return df.format(this.objectiveFunctions.get(0)).replace(",", ".") 
                 + "\t"+ df.format(this.fitness).replace(",", ".")
                 + "\t" + this.chromossomes;

@@ -16,10 +16,10 @@ public class Main {
                 .setCrossOverProbability(0.7)
                 .setMutationProbabilty(0.02)
                 .setNumberOfExecutions(5)
-                .setNumberOfGenerations(100)
+                .setNumberOfGenerations(500)
                 .setPopulationSize(100);
         
         metaheuristic.geneticAlgorithm();
-        //metaheuristic.printPopulation();
+        metaheuristic.printPopulation();
     }
 }

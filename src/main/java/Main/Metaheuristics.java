@@ -92,7 +92,9 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 
     @Override
     public void storeBestIndividual() {
-
+        if (bestIndividual.getObjectiveFunctions().get(0) > this.population.get(0).getObjectiveFunctions().get(0)) {
+            this.bestIndividual.setSolution(population.get(0));
+        }
     }
 
     @Override
@@ -166,17 +168,36 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
             offspring.add(child1);
             offspring.add(child2);
         }
-
+        
         population.clear();
         population.addAll(offspring);
+        calculateFitness();
     }
 
     @Override
     public void mutation() {
+        Random rnd = new Random();
+        double delta;
+        for (int i = 0; i < this.populationSize; i++) {
+            double probability = rnd.nextDouble();
+            if (probability < this.mutationProbabilty) {
+                delta = 0.1*(1 - -1)*rnd.nextGaussian();
+                List<Double> chromossomes = this.population.get(i).getChromossomes();
+                List<Double> newChromossomes = new ArrayList<>();
+                for (Double chromossome : chromossomes){
+                    newChromossomes.add(delta);
+                }
+                this.population.get(i).setChromossomes(newChromossomes);
+                this.population.get(i).evaluateSolution();
+            }
+        }
     }
 
     @Override
     public void insertBestIndividual() {
+        if (bestIndividual.getObjectiveFunctions().get(0) < this.population.get(0).getObjectiveFunctions().get(0)) {
+            this.population.get(this.population.size() - 1).setSolution(bestIndividual);
+        }
     }
 
     @Override
