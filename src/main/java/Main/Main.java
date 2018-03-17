@@ -10,7 +10,16 @@ package Main;
  * @author renansantos
  */
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("");
+        Metaheuristics metaheuristic = new Metaheuristics()
+                .setCrossOverProbability(0.7)
+                .setMutationProbabilty(0.02)
+                .setNumberOfExecutions(5)
+                .setNumberOfGenerations(10)
+                .setPopulationSize(100);
+        
+        metaheuristic.geneticAlgorithm();
+        metaheuristic.printPopulation();
     }
 }

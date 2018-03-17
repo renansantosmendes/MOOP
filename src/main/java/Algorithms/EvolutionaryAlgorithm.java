@@ -11,8 +11,6 @@ package Algorithms;
  */
 public interface EvolutionaryAlgorithm {
 
-    public void run();
-
     public void storeBestIndividual();
 
     public void initializePopulation();
@@ -37,7 +35,7 @@ public interface EvolutionaryAlgorithm {
     
     public void saveData();
 
-    default void GeneticAlgorithm() {
+    default void geneticAlgorithm() {
         initializeFilesToSaveData();
         initializePopulation();
         while (stopCriterionIsNotSatisfied()) {
