@@ -26,15 +26,15 @@ public interface EvolutionaryAlgorithm {
     public void initializeFilesToSaveData();
 
     public boolean stopCriterionIsNotSatisfied();
-    
+
     public void printInformations();
-    
+
     public void printPopulation();
-    
+
     public void calculateFitness();
-    
+
     public void incrementsCurrentIteration();
-    
+
     public void saveData();
 
     default void geneticAlgorithm() {
@@ -44,11 +44,12 @@ public interface EvolutionaryAlgorithm {
         while (stopCriterionIsNotSatisfied()) {
             printInformations();
             calculateFitness();
-            storeBestIndividual();
+            insertBestIndividual();
             selection();
             crossOver();
             mutation();
-            insertBestIndividual();
+            calculateFitness();
+            storeBestIndividual();
             incrementsCurrentIteration();
             saveData();
         }

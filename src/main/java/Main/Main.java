@@ -5,6 +5,9 @@
  */
 package Main;
 
+import ProblemRepresentation.Solution;
+import java.util.Comparator;
+
 /**
  *
  * @author renansantos
@@ -13,15 +16,16 @@ public class Main {
 
     public static void main(String[] args) {
         Metaheuristics metaheuristic = new Metaheuristics()
-                .setCrossOverProbability(0.6)
-                .setMutationProbabilty(0.002)
+                .setCrossOverProbability(0.7)
+                .setMutationProbabilty(0.02)
                 .setNumberOfExecutions(5)
                 .setNumberOfGenerations(100)
+                .setExtrapolationParameter(0.1)
                 .setPopulationSize(100);
 
         metaheuristic.geneticAlgorithm();
 //        metaheuristic.printPopulation();
-        //metaheuristic.initializePopulation();
+//        metaheuristic.initializePopulation();
         metaheuristic.printPopulation();
     }
 }

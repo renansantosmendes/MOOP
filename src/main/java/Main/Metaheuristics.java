@@ -28,9 +28,11 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
     private int currentGeneration = 0;
     private int numberOfExecutions = 1;
     private int numberOfChromossomes = 2;
+    private double extrapolationParameter = 0;
     private Solution bestIndividual = new Solution();
     private DataOutput output;
-    DataOutput outputForBestSolutions;
+    private DataOutput outputForBestSolutions;
+    
 
     public Metaheuristics() {
         this.population = new ArrayList<>();
@@ -90,6 +92,11 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
         return this;
     }
 
+    public Metaheuristics setExtrapolationParameter(double csi){
+        this.extrapolationParameter = csi;
+        return this;
+    }
+    
     @Override
     public void storeBestIndividual() {
         if (bestIndividual.getObjectiveFunctions().get(0) > this.population.get(0).getObjectiveFunctions().get(0)) {
@@ -148,28 +155,39 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
         Random rnd = new Random();
         List<Solution> offspring = new ArrayList<>();
         for (int i = 0; i < this.population.size(); i = i + 2) {
-            double delta = rnd.nextDouble();
-            Solution parent1 = new Solution(this.population.get(i).clone());
-            Solution parent2 = new Solution(this.population.get(i + 1).clone());
-            List<Double> newChromossomes1 = new ArrayList<>();
-            List<Double> newChromossomes2 = new ArrayList<>();
-            for (int j = 0; j < this.numberOfChromossomes; j++) {
-                newChromossomes1.add(delta * parent1.getChromossomes().get(j) + (1 - delta) * parent2.getChromossomes().get(j));
-                newChromossomes2.add(delta * parent2.getChromossomes().get(j) + (1 - delta) * parent1.getChromossomes().get(j));
+            double probability = rnd.nextDouble();
+            if (probability < this.crossOverProbability) {
+                double randomValue = rnd.nextDouble();
+//                double randomValue = 0.5;
+                double csi = this.extrapolationParameter;
+                double u = -csi + (1 + 2*csi)*randomValue;
+                
+                Solution parent1 = new Solution(this.population.get(i).clone());
+                Solution parent2 = new Solution(this.population.get(i + 1).clone());
+                List<Double> newChromossomes1 = new ArrayList<>();
+                List<Double> newChromossomes2 = new ArrayList<>();
+                for (int j = 0; j < this.numberOfChromossomes; j++) {
+                    newChromossomes1.add(u * parent1.getChromossomes().get(j) + (1 - u) * parent2.getChromossomes().get(j));
+                    newChromossomes2.add(u * parent2.getChromossomes().get(j) + (1 - u) * parent1.getChromossomes().get(j));
+                }
+                Solution child1 = new Solution();
+                Solution child2 = new Solution();
+
+                child1.setChromossomes(newChromossomes1);
+                child2.setChromossomes(newChromossomes2);
+
+                child1.evaluateSolution();
+                child2.evaluateSolution();
+
+                offspring.add(child1);
+                offspring.add(child2);
+            } else {
+                offspring.add(this.population.get(i).clone());
+                offspring.add(this.population.get(i + 1).clone());
             }
-            Solution child1 = new Solution();
-            Solution child2 = new Solution();
-            
-            child1.setChromossomes(newChromossomes1);
-            child2.setChromossomes(newChromossomes2);
-            
-            child1.evaluateSolution();
-            child2.evaluateSolution();
-            
-            offspring.add(child1);
-            offspring.add(child2);
+
         }
-        
+
         population.clear();
         population.addAll(offspring);
         calculateFitness();
@@ -185,8 +203,8 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 //                delta = 0.001*(8)*rnd.nextGaussian();
                 List<Double> chromossomes = this.population.get(i).getChromossomes();
                 List<Double> newChromossomes = new ArrayList<>();
-                for (Double chromossome : chromossomes){
-                    delta = 0.01*(this.population.get(i).getMAX_VALUE() - this.population.get(i).getMIN_VALUE())*rnd.nextGaussian();
+                for (Double chromossome : chromossomes) {
+                    delta = 0.01 * (this.population.get(i).getMAX_VALUE() - this.population.get(i).getMIN_VALUE()) * rnd.nextGaussian();
                     newChromossomes.add(chromossome + delta);
                 }
                 this.population.get(i).setChromossomes(newChromossomes);
@@ -197,8 +215,8 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 
     @Override
     public void insertBestIndividual() {
-       // if (bestIndividual.getObjectiveFunctions().get(0) < this.population.get(0).getObjectiveFunctions().get(0)) {
-            this.population.get(this.population.size() - 1).setSolution(bestIndividual);
+        // if (bestIndividual.getObjectiveFunctions().get(0) < this.population.get(0).getObjectiveFunctions().get(0)) {
+        this.population.get(this.population.size() - 1).setSolution(bestIndividual);
         //}
     }
 
@@ -218,6 +236,8 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 
     @Override
     public void calculateFitness() {
+        population.sort(Comparator.comparing(Solution::getMonoObjectiveFunction));
+        
         double sum = population.stream().mapToDouble(s -> s.getObjectiveFunctions().get(0)).sum();
         population.forEach(s -> s.setFitness(s.getObjectiveFunctions().get(0) / sum));
 
@@ -227,7 +247,7 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
 
         double fitnessSum = population.stream().mapToDouble(Solution::getFitness).sum();
         population.forEach(u -> u.setFitness(u.getFitness() / fitnessSum));
-        population.sort(Comparator.comparing(Solution::getFitness).reversed());
+        //population.sort(Comparator.comparing(Solution::getFitness).reversed());
     }
 
     @Override

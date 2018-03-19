@@ -75,6 +75,10 @@ public class Solution implements Cloneable {
         return MIN_VALUE;
     }
 
+    public double getMonoObjectiveFunction(){
+        return this.objectiveFunctions.get(0);
+    }
+    
     public void setFitness(double fitness) {
         this.fitness = fitness;
     }
