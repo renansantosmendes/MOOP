@@ -15,7 +15,7 @@ import java.util.Comparator;
 public class Main {
 
     public static void main(String[] args) {
-        Metaheuristics metaheuristic = new Metaheuristics()
+        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm()
                 .setCrossOverProbability(0.7)
                 .setMutationProbabilty(0.02)
                 .setNumberOfExecutions(5)
@@ -23,9 +23,9 @@ public class Main {
                 .setExtrapolationParameter(0.1)
                 .setPopulationSize(100);
 
-        metaheuristic.geneticAlgorithm();
+        geneticAlgorithm.execute();
 //        metaheuristic.printPopulation();
 //        metaheuristic.initializePopulation();
-        metaheuristic.printPopulation();
+        geneticAlgorithm.printPopulation();
     }
 }

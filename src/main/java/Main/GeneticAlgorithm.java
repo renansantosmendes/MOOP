@@ -17,7 +17,7 @@ import java.util.Random;
  *
  * @author renansantos
  */
-public class Metaheuristics implements EvolutionaryAlgorithm {
+public class GeneticAlgorithm implements EvolutionaryAlgorithm {
 
     private List<Solution> population;
     private List<Integer> parents;
@@ -34,7 +34,7 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
     private DataOutput outputForBestSolutions;
     
 
-    public Metaheuristics() {
+    public GeneticAlgorithm() {
         this.population = new ArrayList<>();
         this.parents = new ArrayList<>();
     }
@@ -67,32 +67,32 @@ public class Metaheuristics implements EvolutionaryAlgorithm {
         return parents;
     }
 
-    public Metaheuristics setMutationProbabilty(double mutationProbabilty) {
+    public GeneticAlgorithm setMutationProbabilty(double mutationProbabilty) {
         this.mutationProbabilty = mutationProbabilty;
         return this;
     }
 
-    public Metaheuristics setCrossOverProbability(double crossOverProbability) {
+    public GeneticAlgorithm setCrossOverProbability(double crossOverProbability) {
         this.crossOverProbability = crossOverProbability;
         return this;
     }
 
-    public Metaheuristics setPopulationSize(long populationSize) {
+    public GeneticAlgorithm setPopulationSize(long populationSize) {
         this.populationSize = populationSize;
         return this;
     }
 
-    public Metaheuristics setNumberOfGenerations(int numberOfGenerations) {
+    public GeneticAlgorithm setNumberOfGenerations(int numberOfGenerations) {
         this.numberOfGenerations = numberOfGenerations;
         return this;
     }
 
-    public Metaheuristics setNumberOfExecutions(int numberOfExecutions) {
+    public GeneticAlgorithm setNumberOfExecutions(int numberOfExecutions) {
         this.numberOfExecutions = numberOfExecutions;
         return this;
     }
 
-    public Metaheuristics setExtrapolationParameter(double csi){
+    public GeneticAlgorithm setExtrapolationParameter(double csi){
         this.extrapolationParameter = csi;
         return this;
     }

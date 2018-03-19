@@ -37,7 +37,7 @@ public interface EvolutionaryAlgorithm {
 
     public void saveData();
 
-    default void geneticAlgorithm() {
+    default void execute() {
         initializeFilesToSaveData();
         initializePopulation();
         printPopulation();
