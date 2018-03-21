@@ -79,10 +79,14 @@ public class Solution implements Cloneable {
         return MIN_VALUE;
     }
 
-    public double getMonoObjectiveFunction(){
+    public List<Solution> getSolutionsThatDominate() {
+        return solutionsThatDominate;
+    }
+
+    public double getMonoObjectiveFunction() {
         return this.objectiveFunctions.get(0);
     }
-    
+
     public void setFitness(double fitness) {
         this.fitness = fitness;
     }
@@ -132,23 +136,31 @@ public class Solution implements Cloneable {
         return solution;
     }
 
-    public void addDominatedSolution(Solution solution){
+    public void addDominatedSolution(Solution solution) {
         this.dominatedSolutions.add(solution);
     }
-    
-    public void clearDominatedSolutions(){
+
+    public void addDominatedBySolution(Solution solution) {
+        this.solutionsThatDominate.add(solution);
+    }
+
+    public void clearDominatedSolutions() {
         this.dominatedSolutions.clear();
     }
-    
-//    public boolean isNonDominated(){
-//        return this
-//    }
-    
+
+    public void clearSolutionsThatDominate() {
+        this.solutionsThatDominate.clear();
+    }
+
+    public boolean isNonDominated() {
+        return this.solutionsThatDominate.size() == 0;
+    }
+
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("0.0000000000");
-        return df.format(this.objectiveFunctions.get(0)).replace(",", ".") 
-                + "\t" +df.format(this.objectiveFunctions.get(1)).replace(",", ".") 
+        return df.format(this.objectiveFunctions.get(0)).replace(",", ".")
+                + "\t" + df.format(this.objectiveFunctions.get(1)).replace(",", ".")
                 + "\t" + df.format(this.fitness).replace(",", ".")
                 + "\t" + this.chromossomes;
     }

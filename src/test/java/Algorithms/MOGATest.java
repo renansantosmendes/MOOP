@@ -32,6 +32,8 @@ public class MOGATest {
         moga.evaluatePopulation();
         moga.nonDomination();
         moga.printPopulation();
+        System.out.println("Non dominated set");
+        moga.printNonDominatedSet();
     }
     
 }
