@@ -20,8 +20,10 @@ public class Solution implements Cloneable {
     private List<Double> objectiveFunctions;
     private int numberOfChromossomes;
     private double fitness;
-    private double MAX_VALUE = 4;
-    private double MIN_VALUE = -4;
+    private double MAX_VALUE = 1;
+    private double MIN_VALUE = 0;
+    private List<Solution> dominatedSolutions = new ArrayList<>();
+    private List<Solution> solutionsThatDominate = new ArrayList<>();
 
     public Solution(List<Double> chromossome, List<Double> objectiveFunction, double fitness) {
         this.chromossomes = new ArrayList<>();
@@ -52,7 +54,8 @@ public class Solution implements Cloneable {
     }
 
     public void setChromossomes(List<Double> chromossomes) {
-        this.chromossomes = chromossomes;
+        this.chromossomes.clear();
+        this.chromossomes.addAll(chromossomes);
     }
 
     public List<Double> getObjectiveFunctions() {
@@ -60,7 +63,8 @@ public class Solution implements Cloneable {
     }
 
     public void setObjectiveFunctions(List<Double> objectiveFunctions) {
-        this.objectiveFunctions = objectiveFunctions;
+        this.objectiveFunctions.clear();
+        this.objectiveFunctions.addAll(objectiveFunctions);
     }
 
     public double getFitness() {
@@ -128,10 +132,23 @@ public class Solution implements Cloneable {
         return solution;
     }
 
+    public void addDominatedSolution(Solution solution){
+        this.dominatedSolutions.add(solution);
+    }
+    
+    public void clearDominatedSolutions(){
+        this.dominatedSolutions.clear();
+    }
+    
+//    public boolean isNonDominated(){
+//        return this
+//    }
+    
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("0.0000000000");
-        return df.format(this.objectiveFunctions.get(0)).replace(",", ".")
+        return df.format(this.objectiveFunctions.get(0)).replace(",", ".") 
+                + "\t" +df.format(this.objectiveFunctions.get(1)).replace(",", ".") 
                 + "\t" + df.format(this.fitness).replace(",", ".")
                 + "\t" + this.chromossomes;
     }
