@@ -32,7 +32,6 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
     protected Solution bestIndividual = new Solution();
     protected DataOutput output;
     protected DataOutput outputForBestSolutions;
-    
 
     public GeneticAlgorithm() {
         this.population = new ArrayList<>();
@@ -86,7 +85,7 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
         this.numberOfGenerations = numberOfGenerations;
         return this;
     }
-    
+
     public GeneticAlgorithm setNumberOfChromossomes(int numberOfChromossomes) {
         this.numberOfChromossomes = numberOfChromossomes;
         return this;
@@ -97,11 +96,11 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
         return this;
     }
 
-    public GeneticAlgorithm setExtrapolationParameter(double csi){
+    public GeneticAlgorithm setExtrapolationParameter(double csi) {
         this.extrapolationParameter = csi;
         return this;
     }
-    
+
     @Override
     public void storeBestIndividual() {
         if (bestIndividual.getObjectiveFunctions().get(0) > this.population.get(0).getObjectiveFunctions().get(0)) {
@@ -116,8 +115,27 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
                     .setNumberOfChromossomes(numberOfChromossomes)
                     .buildRandomSolution());
         }
+        //evaluatePopulation();
         calculateFitness();
         this.bestIndividual.setSolution(population.get(0));
+    }
+
+    @Override
+    public void evaluatePopulation() {
+        for (int i = 0; i < this.populationSize; i++) {
+            List<Double> objectiveFunctions = new ArrayList<>();
+            double f1 = 4 * population.get(i).getChromossomes().get(0) * population.get(i).getChromossomes().get(0)
+                    + 9 * population.get(i).getChromossomes().get(1) * population.get(i).getChromossomes().get(1)
+                    - 10 * Math.cos(2 * Math.PI * population.get(i).getChromossomes().get(0))
+                    - 10 * Math.cos(2 * Math.PI * population.get(i).getChromossomes().get(1));
+
+            objectiveFunctions.add(f1);
+
+            this.population.get(i).setObjectiveFunctions(objectiveFunctions);
+        }
+
+        this.population.sort(Comparator.comparing(s -> s.getObjectiveFunctions().get(0)));
+
     }
 
     @Override
@@ -163,10 +181,9 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
             double probability = rnd.nextDouble();
             if (probability < this.crossOverProbability) {
                 double randomValue = rnd.nextDouble();
-//                double randomValue = 0.5;
                 double csi = this.extrapolationParameter;
-                double u = -csi + (1 + 2*csi)*randomValue;
-                
+                double u = -csi + (1 + 2 * csi) * randomValue;
+
                 Solution parent1 = new Solution(this.population.get(i).clone());
                 Solution parent2 = new Solution(this.population.get(i + 1).clone());
                 List<Double> newChromossomes1 = new ArrayList<>();
@@ -242,16 +259,16 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
     @Override
     public void calculateFitness() {
         population.sort(Comparator.comparing(Solution::getMonoObjectiveFunction));
-        
+
         double sum = population.stream().mapToDouble(s -> s.getObjectiveFunctions().get(0)).sum();
         population.forEach(s -> s.setFitness(s.getObjectiveFunctions().get(0) / sum));
 
-        double max = population.stream().mapToDouble(Solution::getFitness).max().getAsDouble();
-        double min = population.stream().mapToDouble(Solution::getFitness).min().getAsDouble();
-        population.forEach(u -> u.setFitness((max - u.getFitness()) / (max - min)));
-
-        double fitnessSum = population.stream().mapToDouble(Solution::getFitness).sum();
-        population.forEach(u -> u.setFitness(u.getFitness() / fitnessSum));
+//        double max = population.stream().mapToDouble(Solution::getFitness).max().getAsDouble();
+//        double min = population.stream().mapToDouble(Solution::getFitness).min().getAsDouble();
+//        population.forEach(u -> u.setFitness((max - u.getFitness()) / (max - min)));
+//
+//        double fitnessSum = population.stream().mapToDouble(Solution::getFitness).sum();
+//        population.forEach(u -> u.setFitness(u.getFitness() / fitnessSum));
         //population.sort(Comparator.comparing(Solution::getFitness).reversed());
     }
 

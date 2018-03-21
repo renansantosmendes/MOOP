@@ -14,6 +14,8 @@ public interface EvolutionaryAlgorithm {
     public void storeBestIndividual();
 
     public void initializePopulation();
+    
+    public void evaluatePopulation();
 
     public void selection();
 

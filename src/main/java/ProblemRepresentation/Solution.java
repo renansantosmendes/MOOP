@@ -160,7 +160,7 @@ public class Solution implements Cloneable {
     public String toString() {
         DecimalFormat df = new DecimalFormat("0.0000000000");
         return df.format(this.objectiveFunctions.get(0)).replace(",", ".")
-                + "\t" + df.format(this.objectiveFunctions.get(1)).replace(",", ".")
+//                + "\t" + df.format(this.objectiveFunctions.get(1)).replace(",", ".")
                 + "\t" + df.format(this.fitness).replace(",", ".")
                 + "\t" + this.chromossomes;
     }
