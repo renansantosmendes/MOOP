@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Main;
+package Algorithms;
 
 import ProblemRepresentation.Solution;
 import Algorithms.EvolutionaryAlgorithm;
@@ -19,19 +19,19 @@ import java.util.Random;
  */
 public class GeneticAlgorithm implements EvolutionaryAlgorithm {
 
-    private List<Solution> population;
-    private List<Integer> parents;
-    private double mutationProbabilty;
-    private double crossOverProbability;
-    private long populationSize;
-    private long numberOfGenerations;
-    private int currentGeneration = 0;
-    private int numberOfExecutions = 1;
-    private int numberOfChromossomes = 2;
-    private double extrapolationParameter = 0;
-    private Solution bestIndividual = new Solution();
-    private DataOutput output;
-    private DataOutput outputForBestSolutions;
+    protected List<Solution> population;
+    protected List<Integer> parents;
+    protected double mutationProbabilty;
+    protected double crossOverProbability;
+    protected long populationSize;
+    protected long numberOfGenerations;
+    protected int currentGeneration = 0;
+    protected int numberOfExecutions = 1;
+    protected int numberOfChromossomes = 2;
+    protected double extrapolationParameter = 0;
+    protected Solution bestIndividual = new Solution();
+    protected DataOutput output;
+    protected DataOutput outputForBestSolutions;
     
 
     public GeneticAlgorithm() {

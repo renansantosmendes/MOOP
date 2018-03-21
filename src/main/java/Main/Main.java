@@ -5,6 +5,7 @@
  */
 package Main;
 
+import Algorithms.GeneticAlgorithm;
 import ProblemRepresentation.Solution;
 import java.util.Comparator;
 

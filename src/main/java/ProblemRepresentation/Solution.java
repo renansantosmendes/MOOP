@@ -100,6 +100,7 @@ public class Solution implements Cloneable {
 //        this.objectiveFunctions.add(chromossomes.get(0) * chromossomes.get(0) + chromossomes.get(1) * chromossomes.get(1));
 
 //        Rastringin Function
+        this.objectiveFunctions.clear();
         this.objectiveFunctions.add(4 * chromossomes.get(0) * chromossomes.get(0) + 9 * chromossomes.get(1) * chromossomes.get(1)
                 - 10 * Math.cos(2 * Math.PI * chromossomes.get(0)) - 10 * Math.cos(2 * Math.PI * chromossomes.get(1)));
 
