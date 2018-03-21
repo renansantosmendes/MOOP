@@ -5,7 +5,9 @@
  */
 package Algorithms;
 
+import ProblemRepresentation.Solution;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -18,13 +20,17 @@ public class MOGA extends GeneticAlgorithm {
         for (int i = 0; i < this.populationSize; i++) {
             List<Double> objectiveFunctions = new ArrayList<>();
             double f1 = population.get(i).getChromossomes().get(0);
-            double g = 1 + 9 * population.get(i).getChromossomes().get(1);
-            double f2 = g * (1 - Math.sqrt(f1 / g));
+            double g = 1 + 9 * (population.get(i).getChromossomes().stream().mapToDouble(u -> u).sum() - f1)
+                    / (population.get(i).getChromossomes().size() - 1);
+            double f2 = g * (1 - Math.sqrt((f1 / g)));
+
             objectiveFunctions.add(f1);
             objectiveFunctions.add(f2);
 
             this.population.get(i).setObjectiveFunctions(objectiveFunctions);
         }
+
+        this.population.sort(Comparator.comparing(s -> s.getObjectiveFunctions().get(0)));
 
     }
 
@@ -32,18 +38,18 @@ public class MOGA extends GeneticAlgorithm {
         for (int i = 0; i < this.populationSize; i++) {
             population.get(i).clearDominatedSolutions();
             for (int j = 0; j < this.populationSize; j++) {
-                if(i != j){
-                    if(population.get(i).getObjectiveFunctions().get(0) < population.get(j).getObjectiveFunctions().get(0) && 
-                            population.get(i).getObjectiveFunctions().get(1) < population.get(j).getObjectiveFunctions().get(1)){
+                if (i != j) {
+                    if (population.get(i).getObjectiveFunctions().get(0) < population.get(j).getObjectiveFunctions().get(0)
+                            && population.get(i).getObjectiveFunctions().get(1) < population.get(j).getObjectiveFunctions().get(1)) {
                         population.get(i).addDominatedSolution(population.get(j));
                     }
                 }
             }
         }
     }
-    
-    public void printNonDominatedSet(){
-        
+
+    public void printNonDominatedSet() {
+
     }
 
 }

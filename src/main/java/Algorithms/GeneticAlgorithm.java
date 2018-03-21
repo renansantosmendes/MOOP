@@ -86,6 +86,11 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
         this.numberOfGenerations = numberOfGenerations;
         return this;
     }
+    
+    public GeneticAlgorithm setNumberOfChromossomes(int numberOfChromossomes) {
+        this.numberOfChromossomes = numberOfChromossomes;
+        return this;
+    }
 
     public GeneticAlgorithm setNumberOfExecutions(int numberOfExecutions) {
         this.numberOfExecutions = numberOfExecutions;

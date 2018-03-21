@@ -25,6 +25,7 @@ public class MOGATest {
                 .setNumberOfExecutions(5)
                 .setNumberOfGenerations(100)
                 .setExtrapolationParameter(0.1)
+                .setNumberOfChromossomes(2)
                 .setPopulationSize(100);
 
         moga.initializePopulation();
