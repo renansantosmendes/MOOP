@@ -5,6 +5,7 @@
  */
 package Algorithms;
 
+import ProblemRepresentation.Solution;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.*;
  * @author renansantos
  */
 public class MOGATest {
-    
+
     public MOGATest() {
     }
 
@@ -22,18 +23,24 @@ public class MOGATest {
         MOGA moga = (MOGA) new MOGA()
                 .setCrossOverProbability(0.7)
                 .setMutationProbabilty(0.02)
-                .setNumberOfExecutions(5)
-                .setNumberOfGenerations(100)
                 .setExtrapolationParameter(0.1)
+                .setNumberOfExecutions(5)
+                .setNumberOfGenerations(2)
                 .setNumberOfChromossomes(2)
-                .setPopulationSize(100);
+                .setPopulationSize(100)
+                .setFileSize(100)
+                .setVariableLowerBound(0)
+                .setVariableUpperBound(1);
 
-        moga.initializePopulation();
-        moga.evaluatePopulation();
-        moga.nonDomination();
-        moga.printPopulation();
-        System.out.println("Non dominated set");
-        moga.printNonDominatedSet();
+//        moga.initializePopulation();
+//        moga.evaluatePopulation();
+//        moga.nonDomination();
+//        moga.printPopulation();
+//        System.out.println("Non dominated set");
+//        moga.printNonDominatedSet();
+        moga.execute();
+//        moga.printNonDominatedSet();
+        moga.printFileNonDominatedSet();
     }
-    
+
 }

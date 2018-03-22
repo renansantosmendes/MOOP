@@ -24,6 +24,7 @@ public class Solution implements Cloneable {
     private double MIN_VALUE = 0;
     private List<Solution> dominatedSolutions = new ArrayList<>();
     private List<Solution> solutionsThatDominate = new ArrayList<>();
+    private double classification;
 
     public Solution(List<Double> chromossome, List<Double> objectiveFunction, double fitness) {
         this.chromossomes = new ArrayList<>();
@@ -51,6 +52,10 @@ public class Solution implements Cloneable {
 
     public List<Double> getChromossomes() {
         return chromossomes;
+    }
+    
+    public double getClassification(){
+        return this.classification;
     }
 
     public void setChromossomes(List<Double> chromossomes) {
@@ -95,6 +100,10 @@ public class Solution implements Cloneable {
         this.numberOfChromossomes = numberOfChromossomes;
         return this;
     }
+    
+    public void setClassification(double classification){
+        this.classification = classification;
+    }
 
     public void setSolution(Solution solution) {
         this.chromossomes.clear();
@@ -115,6 +124,17 @@ public class Solution implements Cloneable {
     }
 
     public Solution buildRandomSolution() {
+        Random rnd = new Random();
+        for (int i = 0; i < this.numberOfChromossomes; i++) {
+            this.chromossomes.add(MIN_VALUE + (MAX_VALUE - MIN_VALUE) * rnd.nextDouble());
+        }
+        Solution solution = new Solution();
+        solution.setChromossomes(chromossomes);
+        solution.evaluateSolution();
+        return solution;
+    }
+    
+    public Solution buildRandomSolution(double MIN_VALUE, double MAX_VALUE) {
         Random rnd = new Random();
         for (int i = 0; i < this.numberOfChromossomes; i++) {
             this.chromossomes.add(MIN_VALUE + (MAX_VALUE - MIN_VALUE) * rnd.nextDouble());
@@ -159,10 +179,13 @@ public class Solution implements Cloneable {
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("0.0000000000");
-        return df.format(this.objectiveFunctions.get(0)).replace(",", ".")
+        return  this.objectiveFunctions
+//                df.format(this.objectiveFunctions.get(0)).replace(",", ".")
 //                + "\t" + df.format(this.objectiveFunctions.get(1)).replace(",", ".")
                 + "\t" + df.format(this.fitness).replace(",", ".")
+                + "\t" + df.format(this.classification).replace(",", ".")
                 + "\t" + this.chromossomes;
+        
     }
 
     @Override

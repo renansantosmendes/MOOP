@@ -44,6 +44,7 @@ public interface EvolutionaryAlgorithm {
         initializePopulation();
         printPopulation();
         while (stopCriterionIsNotSatisfied()) {
+//            printPopulation();
             printInformations();
             calculateFitness();
             insertBestIndividual();

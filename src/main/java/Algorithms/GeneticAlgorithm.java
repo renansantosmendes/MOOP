@@ -29,7 +29,10 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
     protected int numberOfExecutions = 1;
     protected int numberOfChromossomes = 2;
     protected double extrapolationParameter = 0;
+    protected int fileSize;
     protected Solution bestIndividual = new Solution();
+    private double MAX_VALUE = 1;
+    private double MIN_VALUE = 0;
     protected DataOutput output;
     protected DataOutput outputForBestSolutions;
 
@@ -76,6 +79,16 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
         return this;
     }
 
+    public GeneticAlgorithm setVariableLowerBound(double lowerBound) {
+        this.MIN_VALUE = lowerBound;
+        return this;
+    }
+
+    public GeneticAlgorithm setVariableUpperBound(double upperBound) {
+        this.MAX_VALUE = upperBound;
+        return this;
+    }
+
     public GeneticAlgorithm setPopulationSize(long populationSize) {
         this.populationSize = populationSize;
         return this;
@@ -101,6 +114,11 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
         return this;
     }
 
+    public GeneticAlgorithm setFileSize(int fileSize) {
+        this.fileSize = fileSize;
+        return this;
+    }
+
     @Override
     public void storeBestIndividual() {
         if (bestIndividual.getObjectiveFunctions().get(0) > this.population.get(0).getObjectiveFunctions().get(0)) {
@@ -113,7 +131,7 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
         for (int i = 0; i < this.populationSize; i++) {
             this.population.add(new Solution()
                     .setNumberOfChromossomes(numberOfChromossomes)
-                    .buildRandomSolution());
+                    .buildRandomSolution(MIN_VALUE, MAX_VALUE));
         }
         //evaluatePopulation();
         calculateFitness();
@@ -141,6 +159,7 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
     @Override
     public void printPopulation() {
         System.out.println();
+        population.sort(Comparator.comparing(Solution::getFitness).reversed());
         this.population.forEach(System.out::println);
     }
 
@@ -155,6 +174,7 @@ public class GeneticAlgorithm implements EvolutionaryAlgorithm {
             cursor = rnd.nextDouble() / 2;
             findCursorPosition(currentSum, cursor, rnd);
         }
+        System.out.println(parents);
     }
 
     private void findCursorPosition(double currentSum, double cursor, Random rnd) {

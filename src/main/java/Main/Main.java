@@ -22,7 +22,9 @@ public class Main {
                 .setNumberOfExecutions(5)
                 .setNumberOfGenerations(100)
                 .setExtrapolationParameter(0.1)
-                .setPopulationSize(100);
+                .setPopulationSize(100)
+                .setVariableLowerBound(-4)
+                .setVariableUpperBound(4);
 
         geneticAlgorithm.execute();
 //        metaheuristic.printPopulation();
